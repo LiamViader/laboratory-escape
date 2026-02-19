@@ -77,6 +77,7 @@ public class Minijoc1 : MonoBehaviour
     public void Completat(){
         Resolt = true;
         llumsGameObj.SetActive(true);
+        Debug.Log(llumGameObj);
         llumGameObj.SetActive(false);
         if(controladorInteraccio.Interactuant()) controladorInteraccio.AcabarInteractuar();
         Debug.Log("RESOLT MINIJOC");

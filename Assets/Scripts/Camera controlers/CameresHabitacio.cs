@@ -2,12 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.Rendering.Universal;
+
 
 public class CameresHabitacio : MonoBehaviour
 {
     [SerializeField]
     private List<CinemachineVirtualCamera> _cameres;
     private int act = 0;
+    [SerializeField] bool useSecurityCamShader = true;
+    [SerializeField] string securityCamFeaturePassName;
+    [SerializeField] private UniversalRendererData universalRendererData;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +39,7 @@ public class CameresHabitacio : MonoBehaviour
 
     public CinemachineVirtualCamera Activar()
     {
+        if (!useSecurityCamShader) DeActivateSecurityCamShader();
         act = 0;
         _cameres[act].gameObject.SetActive(true);
         return _cameres[act];
@@ -40,6 +47,7 @@ public class CameresHabitacio : MonoBehaviour
 
     public void Desactivar()
     {
+        if (!useSecurityCamShader) ActivateSecurityCamShader();
         _cameres[act].gameObject.SetActive(false);
     }
 
@@ -65,4 +73,38 @@ public class CameresHabitacio : MonoBehaviour
     {
         return ~LayerMask.GetMask("CamerasZone");
     }
+
+
+    private void ActivateSecurityCamShader()
+    {
+        if (universalRendererData == null)
+        {
+            return;
+        }
+        foreach (var feature in universalRendererData.rendererFeatures)
+        {
+            if (feature != null && feature.name == securityCamFeaturePassName)
+            {
+                feature.SetActive(true);
+                return;
+            }
+        }
+    }
+
+    private void DeActivateSecurityCamShader()
+    {
+        if (universalRendererData == null)
+        {
+            return;
+        }
+        foreach (var feature in universalRendererData.rendererFeatures)
+        {
+            if (feature != null && feature.name == securityCamFeaturePassName)
+            {
+                feature.SetActive(false);
+                return;
+            }
+        }
+    }
+
 }

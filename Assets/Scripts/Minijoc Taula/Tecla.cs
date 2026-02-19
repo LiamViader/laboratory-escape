@@ -14,6 +14,7 @@ public class Tecla : MonoBehaviour
     // Update is called once per frame
 
     void OnMouseDown(){
+        Debug.Log("ASDSAD");
         OnClic.Invoke();
     }
 }
